@@ -2,6 +2,7 @@
  * C Program to Implement a Queue using an Array
  */
 #include <stdio.h>
+#include <stdlib.h>
  
 #define MAX 50
  
