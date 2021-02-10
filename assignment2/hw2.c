@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 
-main()
+int main()
 {
    int input;                               /* User defined integer       */
    int loc[14][14];                         /* Array holding all          */
