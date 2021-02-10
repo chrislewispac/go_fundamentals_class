@@ -17,6 +17,68 @@ func createAndInitMatrix(matrixSize int) (twoDim [][]int) {
 	return outerArray;
 }
 
+func printMatrix(matrix [][]int, otherdiag int, input int) {
+	fmt.Printf("The number you selected was %d", input);
+	fmt.Printf(", and the matrix is:\n\n");
+	for row := 1; row <= input; row++ {
+		fmt.Printf("     ")
+		for col := 1; col <= input; col++ {
+			fmt.Printf("%5d", matrix[row][col])
+		}
+		fmt.Printf(" = %5d\n", matrix[row][0])
+	}
+
+	for col := 0; col <= input; col++ {
+		fmt.Printf("-----");
+	}
+	fmt.Printf("\n%5d", otherdiag);
+	for col := 1; col <= input; col++ {
+		fmt.Printf("%5d", matrix[0][col])
+	}
+	fmt.Printf("   %5d\n", matrix[0][0])
+}
+
+func calculateMatrix(matrix [][]int, input int) ([][]int, int){
+	row := 1;
+	col := input / 2 + 1;
+	otherdiag := 0;
+
+	for value := 1; value <= input*input; value++ {
+		if matrix[row][col] > 0 {
+			row += 2;
+			if row > input {
+				row -= input
+			}
+			col--;
+			if (col < 1) {
+				col = input
+			}
+		}
+		matrix[row][col] = value;
+
+		matrix[0][col] += value;
+		matrix[row][0] += value;
+		if row == col {
+			matrix[0][0] += value
+		}
+
+		if row+col == input + 1 {
+			otherdiag += value
+		}
+
+		row--;
+		if row < 1 {
+			row = input;
+		}
+		col++;
+		if col > input {
+			col = 1
+		}
+	}
+
+	return matrix, otherdiag
+}
+
 func main() {
 			/*                                                                        */
 		/* Print introduction of what this program is all about.                  */
@@ -53,64 +115,11 @@ func main() {
 			fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
 			break;
 		default:
-            matrix := createAndInitMatrix(input + 1);	
-			row := 1;
-			col := input / 2 + 1;
-			otherdiag := 0;
+            matrix := createAndInitMatrix(input + 1);
+			var otherdiag int;	
+			matrix, otherdiag = calculateMatrix(matrix, input);
 
-			for value := 1; value <= input*input; value++ {
-				if matrix[row][col] > 0 {
-					row += 2;
-					if row > input {
-						row -= input
-					}
-					col--;
-					if (col < 1) {
-						col = input
-					}
-				}
-				matrix[row][col] = value;
-
-				matrix[0][col] += value;
-				matrix[row][0] += value;
-				if row == col {
-					matrix[0][0] += value
-				}
-
-				if row+col == input + 1 {
-					otherdiag += value
-				}
-
-				row--;
-				if row < 1 {
-					row = input;
-				}
-				col++;
-				if col > input {
-					col = 1
-				}
-			}
-
-			
-
-			fmt.Printf("The number you selected was %d", input);
-			fmt.Printf(", and the matrix is:\n\n");
-			for row = 1; row <= input; row++ {
-				fmt.Printf("     ")
-				for col = 1; col <= input; col++ {
-					fmt.Printf("%5d", matrix[row][col])
-				}
-				fmt.Printf(" = %5d\n", matrix[row][0])
-			}
-
-			for col = 0; col <= input; col++ {
-				fmt.Printf("-----");
-			}
-			fmt.Printf("\n%5d", otherdiag);
-			for col = 1; col <= input; col++ {
-				fmt.Printf("%5d", matrix[0][col])
-			}
-			fmt.Printf("   %5d\n", matrix[0][0])
+			printMatrix(matrix, otherdiag, input)
 
 			fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
         }
