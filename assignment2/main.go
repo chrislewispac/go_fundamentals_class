@@ -99,29 +99,29 @@ func main() {
         fmt.Scanln(&input);
 
         switch {
-		case (input == -1):
-            fmt.Println("Bye Bye");
-			os.Exit(1);
-        case (input <= 0):
-			fmt.Println("Sorry, but the integer has to be positive.");
-			fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
-			break;
-        case (input > 13):
-			fmt.Println("Sorry, but the integer has to be less than 15.");
-			fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
-			break;
-		case (input % 2 == 0):
-			fmt.Println("Sorry, but the integer has to be odd.");
-			fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
-			break;
-		default:
-            matrix := createAndInitMatrix(input + 1);
-			var otherdiag int;	
-			matrix, otherdiag = calculateMatrix(matrix, input);
+			case (input == -1):
+				fmt.Println("Bye Bye");
+				os.Exit(1);
+			case (input <= 0):
+				fmt.Println("Sorry, but the integer has to be positive.");
+				fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
+				break;
+			case (input > 13):
+				fmt.Println("Sorry, but the integer has to be less than 15.");
+				fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
+				break;
+			case (input % 2 == 0):
+				fmt.Println("Sorry, but the integer has to be odd.");
+				fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
+				break;
+			default:
+				matrix := createAndInitMatrix(input + 1);
+				var otherdiag int;	
+				matrix, otherdiag = calculateMatrix(matrix, input);
 
-			printMatrix(matrix, otherdiag, input)
+				printMatrix(matrix, otherdiag, input)
 
-			fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
+				fmt.Println("\nEnter a positive, odd integer (-1 to exit program):");
         }
 		fmt.Println("Bye bye!")
     }
