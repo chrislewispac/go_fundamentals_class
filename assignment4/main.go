@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"reflect"
 	"strconv"
 	"strings"
 )
@@ -86,25 +85,67 @@ func (ll *LList) print() {
 	fmt.Println("");
 }
 
-// func (ll *LList) remove(target *employee) bool {
+func (ll *LList) remove() bool {
+	node := ll.find()
+	if node == nil {
+		return false
+	}
 
-// }
+	node.prev.next = node.next
+	node.next.prev = node.prev
 
-func (ll *LList) find(target *Employee) *LLNode {
+	return true
+}
+
+func (ll *LList) find() *LLNode {
+	var firstName string;          
+	var lastName string;                   
+	fmt.Print("Please enter employee first name:  ");
+	fmt.Scanln(&firstName);
+	fmt.Print("Please enter employee last name:  ");
+	fmt.Scanln(&lastName);
+
 	if ll.length == 0 {
 		return nil;
 	}
 
 	curr := ll.dummyHead.next;
 
-	for curr != nil {
-		if reflect.DeepEqual(target, curr.value) {
+	for curr.next != nil {
+		if curr.value.name == firstName + " " + lastName {
+			fmt.Println(curr.value.name, curr.value.age, curr.value.salary)
 			return curr;
 		}
 		curr = curr.next;
 	}
 
 	return nil;
+}
+
+func writeFile(ll *LList, fileName string) {
+	
+    f, err := os.Create(fileName)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer f.Close()
+
+	if ll.length == 0 {
+		_, _ = f.WriteString("")
+		return;
+	}
+
+	curr := ll.dummyHead.next;
+
+	for curr != nil {
+		if curr.next != nil {
+			_, _ = f.WriteString(curr.value.name + ";" + strconv.Itoa(curr.value.age) + ";" + strconv.Itoa(curr.value.salary) + "\n")
+		}
+		
+		curr = curr.next;
+	}
 }
 
 func displayEmployees(ll *LList) {
@@ -151,6 +192,10 @@ func addEmployee(ll *LList) {
 }
 
 func main() {
+	if len(os.Args) == 1 {
+		fmt.Println("ERROR: No file name provided as a command line argument")
+		os.Exit(1)
+	}
 	fileName := os.Args[1]
 	file, err := os.Open(fileName)
     if err != nil {
@@ -178,7 +223,7 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	// ll.print();
+
 	for {
         var input string;      
 		fmt.Println("Menu Options:")
@@ -194,21 +239,24 @@ func main() {
 		if input == "1" {
 			addEmployee(ll);
 		} else if input == "2" {
-			fmt.Println("Delete Employee");
+			if ll.remove() {
+				fmt.Println("Employee Deleted\n")
+			} else {
+				fmt.Println("Employee Not Found\n")
+			}
 		} else if input == "3" {
-			fmt.Println("Search Employee");
+			if ll.find() == nil {
+				fmt.Println("Employee not found \n")
+			} 
 		} else if input == "4" {
-			fmt.Println("List All Employeees");
 			displayEmployees(ll);
 		} else if input == "5" {
-			fmt.Println("Save Employee Database");
+			writeFile(ll, fileName)
 		} else if input == "6" {
 			fmt.Println("Exiting Employee Database")
 			os.Exit(1);
 		} else {
-			fmt.Println("Invalid input, please choose from the menu.")
+			fmt.Println("Invalid input, please choose from the menu.\n")
 		}
-		
     }
-
 }
