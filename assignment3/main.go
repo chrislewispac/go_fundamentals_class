@@ -105,14 +105,14 @@ func main() {
 
 	alleyA := LList{
 		length: 0,
-		dummyHead: &LLNode{value: 0},
-		dummyTail: &LLNode{value: 0},
+		dummyHead: &LLNode{},
+		dummyTail: &LLNode{},
 	};
 
 	alleyB := LList{
 		length: 0,
-		dummyHead: &LLNode{value: 0},
-		dummyTail: &LLNode{value: 0},
+		dummyHead: &LLNode{},
+		dummyTail: &LLNode{},
 	};
 
 	for {
